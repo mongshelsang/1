@@ -1,5 +1,6 @@
 import os
 import requests
+from datetime import datetime
 
 TOKEN = os.environ.get("TELEGRAM_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -34,7 +35,6 @@ def get_fgi():
         score = int(data['fear_and_greed']['score'])
         rating = data['fear_and_greed']['rating']
         
-        # 20 이하일 때만 🚨 이모지 추가, 그 외에는 깔끔하게 지수와 상태만 표시
         alert = " 🚨" if score <= 20 else ""
         return f"📊 FGI : {score} ({rating}){alert}"
     except:
@@ -48,6 +48,12 @@ def send_telegram(message):
 if __name__ == "__main__":
     weather_info = get_weather()
     fgi_info = get_fgi()
-    message = f"🤖 [Manpuki 모닝 브리핑]\n\n{weather_info}\n\n{fgi_info}"
+    
+    # 오늘 날짜를 '9/24(목)' 형식으로 생성 (요일은 자동으로 한글 변환)
+    now = datetime.now()
+    days = ['월', '화', '수', '목', '금', '토', '일']
+    today_str = f"{now.month}/{now.day}({days[now.weekday()]})"
+    
+    message = f"🤖 [{today_str}]\n\n{weather_info}\n\n{fgi_info}"
     send_telegram(message)
     print("모닝 브리핑 전송 완료!")
