@@ -18,7 +18,7 @@ def get_weather():
         
         weather_desc = "맑음 ☀️" if wmo_code == 0 else "구름 조금/흐림 ☁️" if wmo_code <= 3 else "비/눈 🌧️"
         
-        return f"🌡️ 우에다 오늘 날씨: {weather_desc}\n📉 최저: {min_temp}°C / 📈 최고: {max_temp}°C\n☔ 강수 확률: {rain_prob}%"
+        return f"🌡️ 우에다 날씨: {weather_desc}\n📉 최저: {min_temp}°C / 📈 최고: {max_temp}°C\n☔ 강수 확률: {rain_prob}%"
     except:
         return "🌡️ 우에다 날씨: 정보를 가져오지 못했습니다."
 
@@ -54,6 +54,6 @@ if __name__ == "__main__":
     days = ['월', '화', '수', '목', '금', '토', '일']
     today_str = f"{now.month}/{now.day}({days[now.weekday()]})"
     
-    message = f"🤖 [{today_str}]\n\n{weather_info}\n\n{fgi_info}"
+    message = f"🤖 {today_str}\n\n{weather_info}\n\n{fgi_info}"
     send_telegram(message)
     print("모닝 브리핑 전송 완료!")
