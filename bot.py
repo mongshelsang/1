@@ -6,12 +6,20 @@ CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 def get_weather():
     try:
-        url = "https://api.open-meteo.com/v1/forecast?latitude=36.402&longitude=138.252&current=temperature_2m,weather_code"
+        # 오늘 하루 일일 예보(최고/최저 기온, 강수 확률 등)를 가져오도록 API 호출 수정
+        url = "https://api.open-meteo.com/v1/forecast?latitude=36.402&longitude=138.252&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=Asia/Tokyo"
         res = requests.get(url).json()
-        temp = res['current']['temperature_2m']
-        wmo_code = res['current']['weather_code']
+        
+        daily = res['daily']
+        max_temp = daily['temperature_2m_max'][0] # 오늘 최고기온
+        min_temp = daily['temperature_2m_min'][0] # 오늘 최저기온
+        rain_prob = daily['precipitation_probability_max'][0] # 오늘 강수 확률(%)
+        wmo_code = daily['weather_code'][0]
+        
+        # 날씨 상태 아이콘 및 설명
         weather_desc = "맑음 ☀️" if wmo_code == 0 else "구름 조금/흐림 ☁️" if wmo_code <= 3 else "비/눈 🌧️"
-        return f"🌡️ 우에다 날씨: {temp}°C ({weather_desc})"
+        
+        return f"🌡️ 우에다 오늘 날씨: {weather_desc}\n📉 최저: {min_temp}°C / 📈 최고: {max_temp}°C\n☔ 강수 확률: {rain_prob}%"
     except:
         return "🌡️ 우에다 날씨: 정보를 가져오지 못했습니다."
 
