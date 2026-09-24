@@ -1,0 +1,30 @@
+name: Daily Manpuki Briefing
+
+on:
+  schedule:
+    # JST(한국/일본 시간) 새벽 3시 정각에 실행 (UTC 기준 18시) -> 딜레이 감안해 아침 6~7시 수령 목표
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Run script
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python bot.py
