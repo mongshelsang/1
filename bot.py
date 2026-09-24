@@ -28,9 +28,9 @@ def get_fgi():
         score = int(data['fear_and_greed']['score'])
         rating = data['fear_and_greed']['rating']
         buy_signal = "🚨 [SPY 1단계 매수 룰 발동 구간!]" if score <= 20 else "💤 관망 구간"
-        return f"📊 CNN FGI 지수: {score} ({rating})\n{buy_signal}"
+        return f"📊 FGI : {score} ({rating})\n{buy_signal}"
     except:
-        return "📊 CNN FGI 지수: 데이터를 가져오지 못했습니다."
+        return "📊 FGI : 데이터를 가져오지 못했습니다."
 
 def send_telegram(message):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
