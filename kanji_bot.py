@@ -25,21 +25,20 @@ def main():
   sample_size = min(5, len(df))
   selected_rows = df.sample(n=sample_size)
 
-  # 오늘 날짜 구하기 (한국 시간 기준 또는 UTC 기준)
+  # 오늘 날짜 구하기
   today = datetime.date.today().strftime("%Y년 %m월 %d일")
 
   msg = f"📅 {today}\n\n"
 
   for i, (idx, row) in enumerate(selected_rows.iterrows(), 1):
-    kanji = row.iloc[0]
+    # K열(인덱스 10)의 한글 뜻만 가져오기
     meaning = row.iloc[10] if len(row) > 10 else "뜻 없음"
 
-    if pd.isna(kanji):
-      kanji = ""
     if pd.isna(meaning):
       meaning = ""
 
-    msg += f"{i}. {kanji} - {meaning}\n"
+    # 한자(A열)는 제외하고 번호와 한글 뜻만 출력
+    msg += f"{i}. {meaning}\n"
 
   send_telegram_message(msg)
 
