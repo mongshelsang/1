@@ -3,7 +3,7 @@ import os
 import pandas as pd
 import requests
 
-# --- [설정 구간] 깃허브 시크릿 이름(TELEGRAM_TOKEN)과 일치하도록 수정 ---
+# 깃허브 시크릿 이름(TELEGRAM_TOKEN)과 정확히 일치하도록 설정
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_TOKEN", "YOUR_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "YOUR_CHAT_ID")
 
