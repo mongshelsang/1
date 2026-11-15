@@ -2,12 +2,17 @@ name: Daily Kanji Bot
 
 on:
   schedule:
-    - cron: '0 16 * * *'  # UTC 기준 오후 4시 = 한국 시간 새벽 1시
-  workflow_dispatch:      # 깃허브 웹에서 수동으로도 실행할 수 있게 해주는 버튼
+    - cron: '0 16 * * *'  # 한국 시간 새벽 1시
+  workflow_dispatch:
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
+    
+    # 👇 이 부분을 추가해 주세요 (토큰 권한 부여)
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
