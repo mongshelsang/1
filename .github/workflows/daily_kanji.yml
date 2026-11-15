@@ -2,16 +2,12 @@ name: Daily Kanji Bot
 
 on:
   schedule:
-    - cron: '0 16 * * *'  # UTC 기준 오후 4시 = 한국 시간 새벽 1시
-  workflow_dispatch:      # 수동 테스트(Run workflow) 버튼 활성화
+    - cron: '0 16 * * *'  # 한국 시간 새벽 1시
+  workflow_dispatch:      # 수동 테스트(Run workflow) 버튼
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-    
-    # 깃허브 레포지토리에 progress.txt 자동 커밋/푸시를 위한 필수 권한
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout repository
@@ -33,11 +29,3 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python kanji_bot.py
-
-      - name: Commit and push progress
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add progress.txt
-          git diff --staged --quiet || git commit -m "Update progress.txt automatically"
-          git push
