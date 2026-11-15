@@ -48,23 +48,25 @@ def main():
     start_idx = 0
     end_idx = min(BATCH_SIZE, total_rows)
 
-  # 3. 30개 단어 추출 (A열: 일본어, E열: 한국어)
+  # 3. 30개 단어 추출 (E열: 한국어 뜻만 추출, 일본어 제외)
   word_list = []
   for i in range(start_idx, end_idx):
-    jp_word = df.iloc[i, 0]  # A열
-    kr_meaning = df.iloc[i, 4]  # E열
-    word_list.append(f"{i+1}. {jp_word} : {kr_meaning}")
+    kr_meaning = df.iloc[i, 4]  # E열 (한국어 뜻)
+    word_list.append(f"{i+1}. {kr_meaning}")
 
   # 4. 포맷 만들기
   today_date = today.strftime("%m/%d")
-  header_text = f"📚 **{today_date} [{start_idx + 1}~{end_idx}]** (전체 {total_rows}개 중)\n-------------------\n"
+  header_text = (
+      f"📚 **{today_date} [{start_idx + 1}~{end_idx}]** (전체 {total_rows}개 중)\n"
+      "-------------------\n"
+  )
   body_text = "\n".join(word_list)
   message = header_text + body_text
 
   # 5. 텔레그램 전송
   result = send_telegram_message(message)
   if result.get("ok"):
-    print("성공적으로 단어 메시지를 전송했습니다.")
+    print("성공적으로 한국어 뜻 단어 메시지를 전송했습니다.")
   else:
     print(f"전송 실패: {result}")
 
