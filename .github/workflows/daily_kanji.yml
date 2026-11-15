@@ -3,7 +3,7 @@ name: Daily Kanji Bot
 on:
   schedule:
     - cron: '0 16 * * *'  # 한국 시간 새벽 1시
-  workflow_dispatch:      # 수동 테스트(Run workflow) 버튼
+  workflow_dispatch:      # 수동 테스트(Run workflow) 버튼 활성화
 
 jobs:
   run-bot:
@@ -25,7 +25,7 @@ jobs:
 
       - name: Run Python script
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python kanji_bot.py
