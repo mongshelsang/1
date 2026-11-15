@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import time
 import requests
 
 TOKEN = os.environ.get("TELEGRAM_TOKEN")
@@ -9,7 +10,7 @@ CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 def get_weather():
   url = "https://api.open-meteo.com/v1/forecast?latitude=36.402&longitude=138.252&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=Asia/Tokyo"
 
-  # 일시적인 통신 오류 방지를 위해 최대 3번까지 재시도
+  # 최대 3번까지 재시도 (실패 시 2초 대기 후 재시도)
   for attempt in range(3):
     try:
       res = requests.get(url, timeout=5)
@@ -35,7 +36,10 @@ def get_weather():
             f" {rain_prob}%"
         )
     except Exception:
-      pass  # 실패 시 조용히 넘어가고 다음 시도 진행
+      pass
+
+    # 실패해서 다음 시도로 넘어가기 전에 2초 대기 (서버 부하 완화)
+    time.sleep(2)
 
   return "🌡️ 우에다 날씨: 정보를 가져오지 못했습니다."
 
@@ -72,7 +76,6 @@ if __name__ == "__main__":
   weather_info = get_weather()
   fgi_info = get_fgi()
 
-  # 오늘 날짜를 '9/24(목)' 형식으로 생성 (요일은 자동으로 한글 변환)
   now = datetime.now()
   days = ["월", "화", "수", "목", "금", "토", "일"]
   today_str = f"{now.month}/{now.day}({days[now.weekday()]})"
