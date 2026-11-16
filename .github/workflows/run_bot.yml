@@ -3,7 +3,7 @@ name: Daily Manpuki Briefing
 on:
   schedule:
     # JST(한국/일본 시간) 새벽 3시 정각에 실행 (UTC 기준 18시) -> 딜레이 감안해 아침 6~7시 수령 목표
-    - cron: '30 21 * * *'
+    - cron: '0 16 * * *'
   workflow_dispatch:
 
 jobs:
