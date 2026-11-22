@@ -8,7 +8,7 @@
 상장 후 104주가 안 된 종목은 조건1을 계산할 수 없어 제외하고, 메시지 아래에 적는다.
 
 텔레그램은 환경변수로 받는다. 둘 다 없으면 결과만 출력하고 전송은 건너뛴다.
-  TELEGRAM_BOT_TOKEN
+  TELEGRAM_TOKEN
   TELEGRAM_CHAT_ID
 """
 
@@ -232,10 +232,10 @@ def format_report(quotes: list[Quote], failed: list[str], asof: str) -> str:
 
 
 def send_telegram(text: str) -> None:
-    token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+    token = os.environ.get("TELEGRAM_TOKEN", "").strip()
     chat_id = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
     if not token or not chat_id:
-        print("TELEGRAM_BOT_TOKEN 또는 TELEGRAM_CHAT_ID가 없어 전송을 건너뜁니다.")
+        print("TELEGRAM_TOKEN 또는 TELEGRAM_CHAT_ID가 없어 전송을 건너뜁니다.")
         return
 
     payload = json.dumps({"chat_id": chat_id, "text": text, "disable_web_page_preview": True}).encode()
