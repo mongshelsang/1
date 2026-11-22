@@ -151,7 +151,8 @@ def screen(symbols: list[str]) -> tuple[dict[str, Quote], str]:
 
 
 def format_report(quotes: dict[str, Quote], asof: str) -> str:
-    lines: list[str] = [asof]
+    header = f"📈 {asof}" if asof else "📈"
+    lines: list[str] = [header]
     for group_name, tickers in GROUPS:
         lines.append(group_name)
         hits = [
