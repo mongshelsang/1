@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 import os
 import pandas as pd
 import requests
@@ -8,7 +8,7 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_TOKEN", "YOUR_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "YOUR_CHAT_ID")
 
 EXCEL_FILE = "今度こそ本気.xlsx"
-BATCH_SIZE = 30  # 하루에 보낼 단어 개수
+BATCH_SIZE = 20  # 하루에 보낼 단어 개수 (30 -> 20으로 변경)
 
 
 def send_telegram_message(message):
@@ -32,10 +32,11 @@ def main():
   df = pd.read_excel(EXCEL_FILE, header=None)
   total_rows = len(df)
 
-  # 2. 날짜를 기반으로 오늘 몇 번째 배치(30개 묶음)를 보낼지 자동 계산
-  start_date = datetime(2026, 11, 1)
-  today = datetime.now()
-  days_passed = (today - start_date).days
+  # 2. 한국/일본 시간(UTC+9) 기준 오늘(11/22)부터 1~20번이 나오도록 기준일 설정
+  jst = timezone(timedelta(hours=9))
+  start_date = datetime(2026, 11, 22, tzinfo=jst)
+  today = datetime.now(jst)
+  days_passed = (today.date() - start_date.date()).days
 
   if days_passed < 0:
     days_passed = 0
@@ -48,7 +49,7 @@ def main():
     start_idx = 0
     end_idx = min(BATCH_SIZE, total_rows)
 
-  # 3. 30개 단어 추출 (E열: 한국어 뜻만 추출, 일본어 제외)
+  # 3. 20개 단어 추출 (E열: 한국어 뜻만 추출, 일본어 제외)
   word_list = []
   for i in range(start_idx, end_idx):
     kr_meaning = df.iloc[i, 4]  # E열 (한국어 뜻)
