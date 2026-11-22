@@ -2,7 +2,7 @@ name: Daily Kanji Bot
 
 on:
   schedule:
-    - cron: '0 16 * * *'  # 한국 시간 새벽 1시
+    - cron: '0 12 * * *'  # 한국/일본 시간 밤 9시 (UTC 12:00)
   workflow_dispatch:      # 수동 테스트(Run workflow) 버튼 활성화
 
 jobs:
