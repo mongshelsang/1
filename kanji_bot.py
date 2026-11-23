@@ -8,7 +8,7 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_TOKEN", "YOUR_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "YOUR_CHAT_ID")
 
 EXCEL_FILE = "今度こそ本気.xlsx"
-BATCH_SIZE = 20  # 하루에 보낼 단어 개수 (30 -> 20으로 변경)
+BATCH_SIZE = 10  # 하루에 보낼 단어 개수 (30 -> 20으로 변경)
 
 
 def send_telegram_message(message):
